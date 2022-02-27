@@ -21,5 +21,5 @@ function App() {
     </div>
   );
 }
-
+console.log("コンソールに出力されましたか？")
 export default App;
