@@ -1,25 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Restaurants } from './containers/Restaurants';
+import { Foods } from './containers/Foods';
+import { Orders } from './containers/Orders';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          動作確認
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+    {/* <Routes>で<Route>を囲む */}
+    <Routes>
+        {/* path="Url" element={コンポーネント} */}
+       <Route path="restaurants" element={<Restaurants />} />
+       <Route path="foods" element={<Foods />} />
+       <Route path="orders" element={<Orders />} />
+    </Routes>
+  </Router>
   );
 }
-console.log("コンソールに出力されましたか？")
 export default App;
