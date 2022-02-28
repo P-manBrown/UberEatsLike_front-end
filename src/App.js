@@ -11,7 +11,7 @@ function App() {
     <Routes>
         {/* path="Url" element={コンポーネント} */}
        <Route path="restaurants" element={<Restaurants />} />
-       <Route path="restaurants/:id/foods" element={<Foods />} />
+       <Route path="restaurants/:restaurantsId/foods" element={<Foods />} />
        <Route path="orders" element={<Orders />} />
     </Routes>
   </Router>
