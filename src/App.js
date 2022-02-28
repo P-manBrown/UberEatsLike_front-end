@@ -11,10 +11,11 @@ function App() {
     <Routes>
         {/* path="Url" element={コンポーネント} */}
        <Route path="restaurants" element={<Restaurants />} />
-       <Route path="foods" element={<Foods />} />
+       <Route path="restaurants/:id/foods" element={<Foods />} />
        <Route path="orders" element={<Orders />} />
     </Routes>
   </Router>
   );
 }
 export default App;
+
