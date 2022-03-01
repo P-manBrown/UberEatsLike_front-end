@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Restaurants } from './containers/Restaurants';
 import { Foods } from './containers/Foods';
