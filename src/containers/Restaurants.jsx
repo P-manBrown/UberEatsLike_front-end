@@ -1,13 +1,20 @@
 import React, { useEffect, useReducer } from "react";
 // styled-componentsを利用可能にする
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+// components
+// Skeltonはロード状態を表すパーツ
+import { Skeleton } from '@mui/material';
 // apis
 import { fetchRestaurants } from "../apis/restaurants";
 // reducer
 import { initialState, restaurantsActionTypes, restaurantsReducer } from "../reducers/restaurants";
+// constants
+import { REQUEST_STATE } from "../constants";
 // images
 import MainLogo from "../images/logo.png";
 import MainCoverImage from "../images/main-cover-image.png";
+import RestaurantImage from "../images/restaurant-image.jpg";
 
 
 // divに対するスタイル
@@ -28,7 +35,34 @@ const MainCoverImageWrapper = styled.div`
 // imgに対してスタイルを適用
 const MainCover = styled.img`
   height: 600px;
-`
+`;
+
+const RestaurantsContentsList = styled.div`
+  /* 横並びにする */
+  display: flex;
+  /* 等しく間隔をあける */
+  justify-content: space-around;
+  margin-bottom: 150px;
+`;
+
+const RestaurantsContentWrapper = styled.div`
+  width: 300px;
+  height: 300px;
+  padding: 48px;
+`;
+
+const RestaurantsImageNode = styled.img`
+  width: 100%;
+`;
+const MainText = styled.p`
+  color: black;
+  font-size: 18px;
+`;
+
+const SubText = styled.p`
+  color: black;
+  font-size: 12px;
+`;
 
 
 export const Restaurants = () => {
@@ -60,13 +94,29 @@ export const Restaurants = () => {
       <MainCoverImageWrapper>
         <MainCover src={MainCoverImage} alt="main cover" />
       </MainCoverImageWrapper>
-      {
-        state.restaurantsList.map(restaurant =>
-        <div key={restaurant.id}>
-          {restaurant.name}
-        </div>
-        )
-      }
+      <RestaurantsContentsList>
+      {/* JSの変数を参照するため{}で括る */}
+      {/* 三項演算子で表示を分ける */}
+        {
+          state.fetchState === REQUEST_STATE.LOADING ?
+            <>
+            {/* 四角形＝rect */}
+              <Skeleton variant="rect" width={450} height={300} />
+              <Skeleton variant="rect" width={450} height={300} />
+              <Skeleton variant="rect" width={450} height={300} />
+            </>
+          :
+          state.restaurantsList.map((item, index) =>
+            <Link to={`/restaurants/${item.id}/foods`} key={index} style={{ textDecoration: 'none' }}>
+              <RestaurantsContentWrapper>
+                <RestaurantsImageNode src={RestaurantImage} />
+                <MainText>{item.name}</MainText>
+                <SubText>{`配送料：${item.fee}円 ${item.time_required}分`}</SubText>
+              </RestaurantsContentWrapper>
+            </Link>
+          )
+        }
+      </RestaurantsContentsList>
     </>
   )
 }
