@@ -22,7 +22,7 @@ export const restaurantsActionTypes = {
 // state,actionを引数に取る。
 // stateには初期値はinitialStateが入り、それ以外は加工されたstateが入る
 // actionにはreducerを使用する側が指定したrestaurantsActionTypeのいずれかが入る
-export const restaurantReducer = (state, action) => {
+export const restaurantsReducer = (state, action) => {
   switch (action.type) {
     // action.typeがrestaurantsActionTypes.FETCHINGであれば
     case restaurantsActionTypes.FETCHING:
