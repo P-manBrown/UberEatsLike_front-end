@@ -101,9 +101,9 @@ export const Restaurants = () => {
           state.fetchState === REQUEST_STATE.LOADING ?
             <>
             {/* 四角形＝rect */}
-              <Skeleton variant="rect" width={450} height={300} />
-              <Skeleton variant="rect" width={450} height={300} />
-              <Skeleton variant="rect" width={450} height={300} />
+              <Skeleton variant="rect" width={300} height={250} />
+              <Skeleton variant="rect" width={300} height={250} />
+              <Skeleton variant="rect" width={300} height={250} />
             </>
           :
           state.restaurantsList.map((item, index) =>

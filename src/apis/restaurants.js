@@ -13,4 +13,3 @@ export const fetchRestaurants =() => {
   // .catch以降でバリデーションエラーメッセージを返すことでフロントエンドで画面に表示することができる
   .catch((e) => console.error(e))
 }
-
