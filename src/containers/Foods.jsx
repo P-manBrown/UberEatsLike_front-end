@@ -1,9 +1,10 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 // components
 import { LocalMallIcon } from '../components/Icons';
 import { FoodWrapper } from '../components/FoodWrapper';
 import { Skeleton } from '@mui/material';
+import { FoodOrderDialog } from '../components/FoodOrderDialog';
 
 // reducers
 import { initialState as foodsInitialState, foodsActionTypes, foodsReducer } from '../reducers/foods';
@@ -55,6 +56,16 @@ export const Foods = () => {
 
   const [ foodsState, dispatch ] = useReducer( foodsReducer, foodsInitialState);
 
+  const initialState = {
+    // MUIではモーダル = Dialogとなっている
+    isOpenOrderDialog: false,
+    // クリックされたFoodは何か
+    selectedFood: null,
+    // selectedFoodの数
+    selectedFoodCount: 1,
+  }
+  const [state, setState] = useState(initialState);
+
   useEffect(() => {
     dispatch({ type: foodsActionTypes.FETCHING });
     fetchFoods(restaurantsId)
@@ -100,13 +111,31 @@ export const Foods = () => {
               {/* FoodWrapperに渡すpropsを記述 */}
                 <FoodWrapper
                   food={food}
-                  onClickFoodWrapper={(food) => console.log(food)}
+                  onClickFoodWrapper={
+                    (food) => setState({
+                      ...state,
+                      isOpenOrderDialog: true,
+                      selectedFood: food,
+                    })
+                  }
                   imageUrl={FoodImage}
                 />
               </ItemWrapper>
             )
         }
       </FoodsList>
+      {
+        /* state.isOpenOrderDialogがtrueの場合に&&以降を返す */
+        state.isOpenOrderDialog &&
+          <FoodOrderDialog
+            food={state.selectedFood}
+            isOpen={state.isOpenOrderDialog}
+            onClose={() => setState({
+              ...state,
+              isOpenOrderDialog: false,
+            })}
+          />
+      }
     </>
   )
 }
