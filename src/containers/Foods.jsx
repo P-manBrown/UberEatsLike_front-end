@@ -66,6 +66,10 @@ export const Foods = () => {
   }
   const [state, setState] = useState(initialState);
 
+  const submitOrder = () => {
+    console.log("Push OrderButton")
+  }
+
   useEffect(() => {
     dispatch({ type: foodsActionTypes.FETCHING });
     fetchFoods(restaurantsId)
@@ -130,10 +134,23 @@ export const Foods = () => {
           <FoodOrderDialog
             food={state.selectedFood}
             isOpen={state.isOpenOrderDialog}
+            // モーダルが閉じる際に全てのstateを初期化
+            countNumber={state.selectedFoodCount}
             onClose={() => setState({
               ...state,
               isOpenOrderDialog: false,
+              selectedFood: null,
+              selectedFoodCount: 1,
             })}
+            onClickCountUp={() => setState({
+              ...state,
+              selectedFoodCount: state.selectedFoodCount + 1,
+            })}
+            onClickCountDown={() => setState({
+              ...state,
+              selectedFoodCount: state.selectedFoodCount - 1,
+            })}
+            onClickOrder={() => submitOrder()}
           />
       }
     </>
