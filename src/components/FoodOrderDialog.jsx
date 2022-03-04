@@ -30,7 +30,7 @@ const CountItem = styled.div`
   margin: 0 8px;
 `;
 
-const countNum = styled.div`
+const CountNum = styled.div`
   padding-top: 10px;
 `;
 
@@ -87,9 +87,9 @@ export const FoodOrderDialog = ({
             />
           </CountItem>
           <CountItem>
-            <countNum>
+            <CountNum>
               {countNumber}
-            </countNum>
+            </CountNum>
           </CountItem>
           <CountItem>
             <CountUpButton

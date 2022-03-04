@@ -1,10 +1,13 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 // components
 import { LocalMallIcon } from '../components/Icons';
 import { FoodWrapper } from '../components/FoodWrapper';
 import { Skeleton } from '@mui/material';
 import { FoodOrderDialog } from '../components/FoodOrderDialog';
+import { NewOrderConfirmDialog } from '../components/NewOrderConfirmDialog';
+import { postLineFoods, replaceLineFoods } from '../apis/line_foods';
+import { HTTP_STATUS_CODE } from '../constants';
 
 // reducers
 import { initialState as foodsInitialState, foodsActionTypes, foodsReducer } from '../reducers/foods';
@@ -56,6 +59,8 @@ export const Foods = () => {
 
   const [ foodsState, dispatch ] = useReducer( foodsReducer, foodsInitialState);
 
+  const navigate = useNavigate()
+
   const initialState = {
     // MUIではモーダル = Dialogとなっている
     isOpenOrderDialog: false,
@@ -63,11 +68,48 @@ export const Foods = () => {
     selectedFood: null,
     // selectedFoodの数
     selectedFoodCount: 1,
+    //  modalの開閉
+    isOpenNewOrderDialog: false,
+    // 既存レストランの名称（初期値は空文字）
+    existingRestaurantName: " ",
+    // 新しく注文を作成するレストラン名（初期値は空文字）
+    newRestaurantName: " ",
   }
+
   const [state, setState] = useState(initialState);
 
   const submitOrder = () => {
-    console.log("Push OrderButton")
+    postLineFoods({
+      // selectedFoodはFoodItemをクリックした際にセットされる
+      foodId: state.selectedFood.id,
+      // selectedFoodCountはmodalでcountを変更した際にセットされている
+      count: state.selectedFoodCount,
+      // 成功した場合には注文ページに遷移
+    }).then(() => navigate("/orders"))
+      // 失敗した場合にはe.response.statusを参照し、HTTP_STATUS_CODE.NOT_ACCEPTABLEか否か判定する
+      .catch((e) => {
+        if (e.response.status === HTTP_STATUS_CODE.NOT_ACCEPTABLE) {
+          // trueであればNewOrderConfirmDialogを表示させるためにstateを更新
+          setState({
+            ...state,
+            isOpenOrderDialog: false,
+            isOpenNewOrderDialog: true,
+            // 以下２つはNewOrderConfirmDialogに渡すために保持
+            existingRestaurantName: e.response.data.existing_restaurant,
+            newRestaurantName: e.response.data.new_restaurant,
+          })
+        } else {
+          throw e;
+        }
+      })
+  }
+
+  const replaceOrder = () => {
+    replaceLineFoods({
+      foodId: state.selectedFood.id,
+      count: state.selectedFoodCount,
+    }).then(() => navigate("/orders"))
+    .catch((e) => {console.log(e)})
   }
 
   useEffect(() => {
@@ -152,6 +194,17 @@ export const Foods = () => {
             })}
             onClickOrder={() => submitOrder()}
           />
+      }
+      {
+        /* isOpenNewOrderDialogがtrueの場合にNewOrderConfirmationをレンダリング */
+        state.isOpenNewOrderDialog &&
+        <NewOrderConfirmDialog
+          isOpen={state.isOpenNewOrderDialog}
+          onClose={() => setState({ ...state, isOpenNewOrderDialog: false })}
+          existingRestaurantName={state.existingRestaurantName}
+          newRestaurantName={state.newRestaurantName}
+          onClickSubmit={() => replaceOrder()}
+        />
       }
     </>
   )
