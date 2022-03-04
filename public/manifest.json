@@ -18,9 +18,9 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": "/restaurants/?utm_source=pwa",
+  "start_url": "./restaurants/?utm_source=pwa",
   "display": "standalone",
   "theme_color": "white",
   "background_color": "#800000",
-  "scope": "/restaurants"
+  "scope": "./"
 }
