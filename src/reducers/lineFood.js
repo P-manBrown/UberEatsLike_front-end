@@ -24,7 +24,7 @@ export const lineFoodsReducer =  (state, action) => {
       return {
         ...state,
         fetchState: REQUEST_STATE.OK,
-        lineFoodsSummary: action.payload.loneFoodsSummary,
+        lineFoodsSummary: action.payload.lineFoodsSummary,
       };
     case lineFoodsActionTypes.POSTING:
       return {
@@ -40,4 +40,3 @@ export const lineFoodsReducer =  (state, action) => {
       throw new Error();
   }
 }
-
