@@ -56,12 +56,20 @@ export const OrderDetailItem = ({
         </p>
       </LineWrapper>
       <LineWrapper>
+        <p>
+          配送料
+        </p>
+        <p>
+          {restaurantFee}円
+        </p>
+      </LineWrapper>
+      <LineWrapper>
         <AmountText>
           合計
         </AmountText>
         <AmountText>
-          {price + restaurantFee}
+          {price + restaurantFee}円
         </AmountText>
       </LineWrapper>
     </>
-)
+);
